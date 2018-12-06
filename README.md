@@ -11,5 +11,5 @@ $ shootbot <URL>
 ## Install
 
 ```
-$ npm install -g shootbot
+$ npm install -g @tilecloud/shootbot
 ```
