@@ -1,4 +1,6 @@
-#!/usr/local/env node
+#!/usr/bin/env node
+
+'use strict';
 
 const program = require('commander');
 const puppeteer = require('puppeteer');
