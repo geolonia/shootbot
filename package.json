@@ -10,6 +10,7 @@
   "license": "MIT",
   "dependencies": {
     "commander": "^2.19.0",
-    "puppeteer": "^1.11.0"
+    "puppeteer": "^1.11.0",
+    "puppeteer-firefox": "^0.4.2"
   }
 }
