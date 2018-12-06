@@ -27,8 +27,8 @@ async function saveScreenshot(url, viewport) {
   const file = url.replace(/https?:\/\//, '').replace(/\/$/, '').replace(/\//g, '-')
   const browser = await puppeteer.launch()
   const page = await browser.newPage()
-  await page.goto(url)
   await page.setViewport({width: viewport, height: 800})
+  await page.goto(url)
   await setTimeout(async () => {
     await page.screenshot({path: file + '-' + viewport + '.png', fullPage: true})
     await browser.close()
