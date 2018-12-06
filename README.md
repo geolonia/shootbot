@@ -1,6 +1,6 @@
 # shootbot
 
-It takes screenshots from the specfic URL for multiple viewports. 
+A command that takes screenshots from the specfic URL for multiple viewports. 
 
 ## Usage
 
