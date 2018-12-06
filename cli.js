@@ -18,6 +18,11 @@ const viewports = [
   576
 ]
 
+if (0 === program.args.length) {
+  program.outputHelp();
+  process.exit(1);
+}
+
 async function saveScreenshot(url, viewport) {
   const file = url.replace(/https?:\/\//, '').replace(/\/$/, '').replace(/\//g, '-')
   const browser = await puppeteer.launch()
