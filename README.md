@@ -8,6 +8,13 @@ Get screenshots from the specfic URL for multiple viewports.
 $ shootbot <URL>
 ```
 
+### Default viewports
+
+* 1200
+* 992
+* 768
+* 576
+
 ## Install
 
 ```
