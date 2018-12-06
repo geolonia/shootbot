@@ -8,8 +8,10 @@ A command that takes screenshots from the specfic URL for multiple viewports.
 $ shootbot <URL>
 ```
 
-```shell
-$ shootbot <URL> --browser=firefox
+Specify a browser.
+
+```
+$ shootbot <URL> -b firefox
 ```
 
 ### Default viewports
