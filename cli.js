@@ -14,7 +14,7 @@ const browsers = {
 
 program
   .version(pkg.version)
-  .usage('<URL>')
+  .usage('[options] <URL>')
   .option('-b, --browser <browser>', '`chrome` or `firefox`. The default is `chrome`')
   .option('-v, --viewports <viewports>', 'Viewports to take screenshots. e.g, `--viewports 1200,320`.')
   .option('-l, --accept-language <language>', 'The language. The default is `en`.')

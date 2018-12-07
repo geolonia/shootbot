@@ -12,15 +12,15 @@ $ npm install -g @tilecloud/shootbot
 
 ```
 $ shootbot -h
-Usage: shootbot <URL>
+Usage: shootbot [options] <URL>
 
 Options:
-  -V, --version                 output the version number
-  -b, --browser <browser>       Rendering browser. Choose `chrome` (default) or `firefox`.
-  --viewports <viewports>       Viewports to take screenshots. e.g, `--viewports 1200,320`.
-  --accept-language <language>  Accept language. The default is `en`. available with `chrome` browser option.
-  --waitfor <seconds>           Number of seconds to wait for saving screenshots. The default is `3000`.
-  -h, --help                    output usage information
+  -V, --version                     output the version number
+  -b, --browser <browser>           `chrome` or `firefox`. The default is `chrome`
+  -v, --viewports <viewports>       Viewports to take screenshots. e.g, `--viewports 1200,320`.
+  -l, --accept-language <language>  The language. The default is `en`.
+  -w, --waitfor <seconds>           The number of seconds to wait for saving screenshots. The default is `3,000`.
+  -h, --help                        output usage information
 ```
 
 ## Default viewports
