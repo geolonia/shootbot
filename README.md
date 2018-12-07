@@ -15,9 +15,11 @@ $ shootbot -h
 Usage: shootbot <URL>
 
 Options:
-  -V, --version            output the version number
-  --viewports <viewports>  Viewports to take screenshots. e.g, `--viewports 1200,320`.
-  -h, --help               output usage information
+  -V, --version                 output the version number
+  --viewports <viewports>       Viewports to take screenshots. e.g, `--viewports 1200,320`.
+  --accept-language <language>  Accept language. The default is `en`.
+  --waitfor <seconds>           Number of seconds to wait for saving screenshots. The default is `3000`.
+  -h, --help                    output usage information
 ```
 
 ## Default viewports
