@@ -53,20 +53,20 @@ const saveScreenshot = async (url, viewport, selectedBrowser) => {
   const browser = await puppeteer.launch()
   const page = await browser.newPage()
 
-  let filename
+  let path
   if (isDefaultBrowser) {
     // firefox-puppeteer@0.4.2 doesn't support `setExtraHTTPHeaders`
     await page.setExtraHTTPHeaders({
       'Accept-Language': lang
     })
-    filename = file + '-' + lang + '-' + viewport + '.png'
+    path = file + '-' + lang + '-' + viewport + '.png'
   } else {
-    filename = file + '-' + viewport + '-' + selectedBrowser + '.png'
+    path = file + '-' + viewport + '-' + selectedBrowser + '.png'
   }
   await page.setViewport({width: parseInt(viewport), height: 800})
   await page.goto(url, {waitUntil: "domcontentloaded"}).then(() => {
     setTimeout(async () => {
-      await page.screenshot({path: filename, fullPage: true})
+      await page.screenshot({path: path, fullPage: true})
       await browser.close()
     }, waitfor)
   }).catch((e) => {
