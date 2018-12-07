@@ -43,3 +43,9 @@ Take screenshots for `https://example.com/` of viewports `1200` and `320`.
 ```
 $ shootbot https://example.com/ --viewports 1200,320
 ```
+
+Take screenshots for `https://example.com/` with Firefox.
+
+```
+$ shootbot https://example.com/ --viewports 1200,320 --browser firefox
+```
