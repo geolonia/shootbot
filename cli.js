@@ -10,7 +10,7 @@ program
   .version(pkg.version)
   .usage('<URL>')
   .option('--viewports <viewports>', 'Viewports to take screenshots. e.g, `--viewports 1200,320`.')
-.parse(process.argv);
+  .parse(process.argv);
 
 let viewports = [
   1200,
