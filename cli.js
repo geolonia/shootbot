@@ -49,7 +49,7 @@ const saveScreenshot = async (url, viewport) => {
   await page.setViewport({width: parseInt(viewport), height: 800})
   await page.goto(url, {waitUntil: "domcontentloaded"}).then(() => {
     setTimeout(async () => {
-      await page.screenshot({path: file + '-' + viewport + '-' + lang + '.png', fullPage: true})
+      await page.screenshot({path: file + '-' + lang + '-' + viewport + '.png', fullPage: true})
       await browser.close()
     }, waitfor)
   }).catch((e) => {
