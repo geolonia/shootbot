@@ -33,11 +33,15 @@ async function saveScreenshot(url, viewport) {
   const browser = await puppeteer.launch()
   const page = await browser.newPage()
   await page.setViewport({width: parseInt(viewport), height: 800})
-  await page.goto(url)
-  await setTimeout(async () => {
-    await page.screenshot({path: file + '-' + viewport + '.png', fullPage: true})
-    await browser.close()
-  }, 5000)
+  await page.goto(url).then(() => {
+    setTimeout(async () => {
+      await page.screenshot({path: file + '-' + viewport + '.png', fullPage: true})
+      await browser.close()
+    }, 5000)
+  }).catch((e) => {
+    console.error(e.message)
+    process.exit(1);
+  })
 }
 
 const url = program.args[0]
