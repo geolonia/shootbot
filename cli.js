@@ -15,45 +15,76 @@ const browsers = {
 program
   .version(pkg.version)
   .usage('<URL>')
-  .option('-b, --browser [type]', 'specify a browser. Choose \'chrome\' [default] or \'firefox\'')
+  .option('-b, --browser <browser>', 'Rendering browser. Choose \'chrome\' (default) or \'firefox\'.')
+  .option('--viewports <viewports>', 'Viewports to take screenshots. e.g, `--viewports 1200,320`.')
+  .option('--accept-language <language>', 'Accept language. The default is `en`. available with \'chrome\' browser option.')
+  .option('--waitfor <seconds>', 'Number of seconds to wait for saving screenshots. The default is `3,000`.')
   .parse(process.argv);
-
-const viewports = [
-  1200,
-  992,
-  768,
-  576
-]
 
 if (0 === program.args.length) {
   program.outputHelp();
   process.exit(1);
 }
 
-async function saveScreenshot(url, viewport, type) {
-  const puppeteer = browsers[type].puppeteer
-  const isDefault = browsers[type].isDefault
+let viewports = [
+  1200,
+  992,
+  768,
+  576
+]
+if (program.viewports && program.viewports.length) {
+  viewports = program.viewports.split(/,/)
+}
+
+let lang = 'en'
+if (program.acceptLanguage && program.acceptLanguage) {
+  lang = program.acceptLanguage
+}
+
+let waitfor = 3000
+if (program.waitfor && program.waitfor) {
+  waitfor = program.waitfor
+}
+
+const saveScreenshot = async (url, viewport, selectedBrowser) => {
   const file = url.replace(/https?:\/\//, '').replace(/\/$/, '').replace(/\//g, '-')
+  const puppeteer = browsers[selectedBrowser].puppeteer
+  const isDefaultBrowser = browsers[selectedBrowser].isDefault
   const browser = await puppeteer.launch()
   const page = await browser.newPage()
-  await page.setViewport({width: viewport, height: 800})
-  await page.goto(url)
-  const filename = (isDefault ? [file, viewport] : [file, viewport, type]).join('-') + '.png'
-  await setTimeout(async () => {
-    await page.screenshot({path: filename, fullPage: true})
-    await browser.close()
-  }, 5000)
+
+  let filename
+  if (isDefaultBrowser) {
+    // firefox-puppeteer@0.4.2 doesn't support `setExtraHTTPHeaders`
+    await page.setExtraHTTPHeaders({
+      'Accept-Language': lang
+    })
+    filename = file + '-' + lang + '-' + viewport + '.png'
+  } else {
+    filename = file + '-' + viewport + '-' + selectedBrowser + '.png'
+  }
+  await page.setViewport({width: parseInt(viewport), height: 800})
+  await page.goto(url, {waitUntil: "domcontentloaded"}).then(() => {
+    setTimeout(async () => {
+      await page.screenshot({path: filename, fullPage: true})
+      await browser.close()
+    }, waitfor)
+  }).catch((e) => {
+    console.error(e.message)
+    process.exit(1)
+  })
 }
 
 const url = program.args[0]
-const type = (program.browser || 'chrome').toLowerCase()
+const selectedBrowser = (program.browser || 'chrome').toLowerCase()
 
-if (!browsers[type]) {
+if (!browsers[selectedBrowser]) {
+  console.error('Detected invalid browser name: `' + selectedBrowser + '`.')
   program.outputHelp();
-  process.exit(2)
+  process.exit(1)
 }
 
 for (let i = 0; i < viewports.length; i++) {
   const viewport = viewports[i]
-  saveScreenshot(url, viewport, type)
+  saveScreenshot(url, viewport, selectedBrowser)
 }
