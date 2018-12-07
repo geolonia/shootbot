@@ -9,9 +9,10 @@ const pkg = require('./package.json');
 program
   .version(pkg.version)
   .usage('<URL>')
+  .option('--viewports <viewports>', 'Viewports to take screenshots. e.g, `--viewports 1200,320`.')
 .parse(process.argv);
 
-const viewports = [
+let viewports = [
   1200,
   992,
   768,
@@ -23,11 +24,15 @@ if (0 === program.args.length) {
   process.exit(1);
 }
 
+if (program.viewports && program.viewports.length) {
+  viewports = program.viewports.split(/,/)
+}
+
 async function saveScreenshot(url, viewport) {
   const file = url.replace(/https?:\/\//, '').replace(/\/$/, '').replace(/\//g, '-')
   const browser = await puppeteer.launch()
   const page = await browser.newPage()
-  await page.setViewport({width: viewport, height: 800})
+  await page.setViewport({width: parseInt(viewport), height: 800})
   await page.goto(url)
   await setTimeout(async () => {
     await page.screenshot({path: file + '-' + viewport + '.png', fullPage: true})
