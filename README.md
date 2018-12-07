@@ -24,10 +24,10 @@ Options:
 
 ## Default viewports
 
-* 1200
-* 992
-* 768
-* 576
+* 1200 px
+* 992 px
+* 768 px
+* 576 px
 
 ## Examples
 
