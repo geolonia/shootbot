@@ -18,7 +18,7 @@ program
   .option('-b, --browser <browser>', 'Rendering browser. Choose `chrome` (default) or `firefox`.')
   .option('--viewports <viewports>', 'Viewports to take screenshots. e.g, `--viewports 1200,320`.')
   .option('--accept-language <language>', 'Accept language. The default is `en`. available with `chrome` browser option.')
-  .option('--waitfor <seconds>', 'Number of seconds to wait for saving screenshots. The default is `3000`.')
+  .option('--waitfor <seconds>', 'Number of seconds to wait for saving screenshots. The default is `3,000`.')
   .parse(process.argv);
 
 if (0 === program.args.length) {
