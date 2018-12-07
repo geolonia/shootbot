@@ -15,10 +15,10 @@ const browsers = {
 program
   .version(pkg.version)
   .usage('<URL>')
-  .option('-b, --browser <browser>', 'Rendering browser. Choose `chrome` (default) or `firefox`.')
-  .option('--viewports <viewports>', 'Viewports to take screenshots. e.g, `--viewports 1200,320`.')
-  .option('--accept-language <language>', 'Accept language. The default is `en`. available with `chrome` browser option.')
-  .option('--waitfor <seconds>', 'Number of seconds to wait for saving screenshots. The default is `3,000`.')
+  .option('-b, --browser <browser>', '`chrome` or `firefox`. The default is `chrome`')
+  .option('-v, --viewports <viewports>', 'Viewports to take screenshots. e.g, `--viewports 1200,320`.')
+  .option('-l, --accept-language <language>', 'The language. The default is `en`.')
+  .option('-w, --waitfor <seconds>', 'The number of seconds to wait for saving screenshots. The default is `3,000`.')
   .parse(process.argv);
 
 if (0 === program.args.length) {
@@ -46,32 +46,36 @@ if (program.waitfor && program.waitfor) {
   waitfor = program.waitfor
 }
 
+const error = (message) => {
+  console.error('\x1b[31mError:\x1b[0m %s', message);
+  process.exit(1)
+}
+
 const saveScreenshot = async (url, viewport, selectedBrowser) => {
-  const file = url.replace(/https?:\/\//, '').replace(/\/$/, '').replace(/\//g, '-')
   const puppeteer = browsers[selectedBrowser].puppeteer
-  const isDefaultBrowser = browsers[selectedBrowser].isDefault
   const browser = await puppeteer.launch()
   const page = await browser.newPage()
 
-  let path
-  if (isDefaultBrowser) {
-    // firefox-puppeteer@0.4.2 doesn't support `setExtraHTTPHeaders`
+  try {
     await page.setExtraHTTPHeaders({
       'Accept-Language': lang
     })
-    path = file + '-' + lang + '-' + viewport + '.png'
-  } else {
-    path = file + '-' + viewport + '-' + selectedBrowser + '.png'
+  } catch(e) {
+    if (program.acceptLanguage && program.acceptLanguage) {
+      error('The browser doesn\'t support `--accept-language`. Please try another browser.')
+    }
   }
+
   await page.setViewport({width: parseInt(viewport), height: 800})
   await page.goto(url, {waitUntil: "domcontentloaded"}).then(() => {
     setTimeout(async () => {
-      await page.screenshot({path: path, fullPage: true})
+      let filename = url.replace(/https?:\/\//, '').replace(/\/$/, '').replace(/\//g, '-') 
+      filename = filename+ '-' + selectedBrowser + '-' + lang  + '-' + viewport + '.png'
+      await page.screenshot({path: filename, fullPage: true})
       await browser.close()
     }, waitfor)
   }).catch((e) => {
-    console.error(e.message)
-    process.exit(1)
+    error(e.message)
   })
 }
 
@@ -79,9 +83,7 @@ const url = program.args[0]
 const selectedBrowser = (program.browser || 'chrome').toLowerCase()
 
 if (!browsers[selectedBrowser]) {
-  console.error('Detected invalid browser name: `' + selectedBrowser + '`.')
-  program.outputHelp();
-  process.exit(1)
+  error('Invalid browser.')
 }
 
 for (let i = 0; i < viewports.length; i++) {
