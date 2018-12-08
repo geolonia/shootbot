@@ -3,16 +3,16 @@
 'use strict';
 
 const program = require('commander');
-const shootbot = require('./lib/Shootbot')
+const shootbot = require('./lib/Shootbot');
 const pkg = require('./package.json');
 
 program
   .version(pkg.version)
   .usage('[options] <URL>')
   .option('-b, --browser <browser>', '`chrome` or `firefox`. The default is `chrome`')
-  .option('-v, --viewports <viewports>', 'Viewports to take screenshots. e.g, `--viewports 1200,320`.')
+  .option('-v, --viewports <viewports>', 'Viewports to take screenshots. e.g, `--viewports 1200x800,320`.')
   .option('-l, --accept-language <language>', 'The language. The default is `en`.')
-  .option('-w, --waitfor <seconds>', 'The number of seconds to wait for saving screenshots. The default is `3,000`.')
+  .option('-w, --waitfor <seconds>', 'The number of seconds to wait for saving screenshots. The default is `3000`.')
   .parse(process.argv);
 
 if (0 === program.args.length) {
@@ -22,33 +22,34 @@ if (0 === program.args.length) {
 
 const url = program.args[0]
 
-const viewports = (program.viewports || '1200,992,768,576').split(/,/)
-const browser = (program.browser || 'chrome').toLowerCase()
-const lang = (program.acceptLanguage || 'en')
-const waitfor = (program.waitfor || 3000)
+const options = shootbot.loadOptions(program)
 
-const errorHandler = (message) => {
-  console.error('\x1b[31mError:\x1b[0m %s', message);
-  process.exit(1)
-}
+for (let i = 0; i < options.viewports.length; i++) {
+  let [width, height] = options.viewports[i].split(/x/)
 
-/* eslint no-unused-vars: 0 */
-const handler = (response) => {
-  // noting to do.
-}
+  if (!width) {
+    width = 1200
+  }
 
-for (let i = 0; i < viewports.length; i++) {
+  let fullpage = true;
+  if (height) {
+    fullpage = false
+  } else {
+    height = 800
+  }
+
   const prefix = url.replace(/https?:\/\//, '').replace(/\/$/, '').replace(/\//g, '-')
-  const filename = `${prefix}-${browser}-${lang}-${viewports[i]}.png`
+  const filename = `${prefix}-${options.browser}-${options.lang}-${options.viewports[i]}.png`
 
   shootbot.saveScreenshot(url, {
     viewport: {
-      width: parseInt(viewports[i]),
-      height: 800,
+      width: parseInt(width),
+      height: parseInt(height),
     },
-    engine: browser,
-    lang: lang,
-    waitfor: waitfor,
-    filename: filename
-  }, handler, errorHandler)
+    engine: options.browser,
+    lang: options.lang,
+    waitfor: options.waitfor,
+    filename: filename,
+    fullpage: fullpage,
+  }, shootbot.handler, shootbot.errorHandler)
 }
