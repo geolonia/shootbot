@@ -14,7 +14,7 @@ $ npm install -g @tilecloud/shootbot
 
 ```
 $ shootbot -h
-Usage: shootbot [options] <URL>
+Usage: shootbot [options] <URL ...>
 
 Options:
   -V, --version                     output the version number
@@ -47,6 +47,13 @@ Take screenshots for `https://example.com/`.
 ```
 $ shootbot https://example.com/
 ```
+
+You also can take screenshots for multiple URLs.
+
+```
+$ shootbot https://example.com/ https://example.org/
+```
+
 
 Take screenshots for `https://example.com/` of viewports `1200` and `320`.
 
