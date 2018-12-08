@@ -1,5 +1,7 @@
 # shootbot
 
+[![Build Status](https://travis-ci.org/tilecloud/shootbot.svg?branch=master)](https://travis-ci.org/tilecloud/shootbot)
+
 A command that takes screenshots from the specfic URL for multiple viewports. 
 
 ## Install

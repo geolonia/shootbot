@@ -4,7 +4,7 @@
   "description": "",
   "bin": "cli.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "eslint cli.js && eslint lib/Shootbot.js && mocha --timeout 10000 --exit"
   },
   "author": "",
   "license": "MIT",
@@ -12,5 +12,11 @@
     "commander": "^2.19.0",
     "puppeteer": "^1.11.0",
     "puppeteer-firefox": "^0.4.2"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "eslint": "^5.10.0",
+    "image-size": "^0.6.3",
+    "mocha": "^5.2.0"
   }
 }
