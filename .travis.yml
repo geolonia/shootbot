@@ -13,3 +13,13 @@ node_js:
 - '10'
 script:
 - npm run test:ci
+deploy:
+  provider: npm
+  email: hatatatehaze@gmail.com
+  api_key:
+    secure: Puvt23FwauWpYFcAf+jJBxW4RWfOpyeK+6bOWzVQS5bE9pVhrVZmzEtlYOjPG13I+oeDIibKIUeteJmT8X1vUmWQfi6KUUxr4z+j3AscbzGePwTkxzIxpJSp9/RDl8RKSulgCwHoz3F/lujdPQX9I8WjUHuVPvEVunTrTSYq1ba9Azw7g292ZkCK25O0Lbtciam19KB5BkgmZRRpeh+2+YwNYTMmBuLqEJnGkZqXmZR2+JXKgalpT31uPLe1k+XvkZtmAVnIlV0eBdzgZsk1E9+go3j/YF8VIv1ZorkcEnxyhtdwXMkqQQFIEHznq3mAPKvkQZqWTcdY+yKtePG424zrl0GsNgXh76yGnnACt4zNJmhj7I992gEdWTXgV4TadMPFhqEhe9n8ZhuZVcJvoPHAckpV6BjnGlp0rDk/WivP+vOEPiq73SzVYQBl+RQKFY7IgcmlcADVqNT04nw6R7pthzB2gmSop2IUlrN0YZhvwFiqU0NPvfIHbb8e2ktToRGpulwLMS9erZXPEyKWgjA83c8c+z12PfVgYMwluKts9vU5k8Ho40+eOyz6wMds8odxIlf6C9Tbu09dJQGDJvNP3led3FhEJVNRvMbwV7C3YC7o6ITPBOiz0V/YnizECfTeQtkmSHrFqkEv/STWt6oju410xsvBZjDEUPJ9QhQ=
+  on:
+    branch: master
+    tags: true
+    repo: tilecloud/shootbot
+  skip_cleanup: true

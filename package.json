@@ -1,6 +1,6 @@
 {
   "name": "@tilecloud/shootbot",
-  "version": "0.1.9",
+  "version": "0.2.0",
   "description": "",
   "bin": "cli.js",
   "scripts": {
