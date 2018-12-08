@@ -25,32 +25,32 @@ const options = shootbot.loadOptions(program)
 
 urls.forEach((url) => {
   options.viewports.forEach((viewport) => {
-      let [width, height] = viewport.split(/x/)
+    let [width, height] = viewport.split(/x/)
 
-      if (!width) {
-        width = 1200
-      }
+    if (!width) {
+      width = 1200
+    }
 
-      let fullpage = true;
-      if (height) {
-        fullpage = false
-      } else {
-        height = 800
-      }
+    let fullpage = true;
+    if (height) {
+      fullpage = false
+    } else {
+      height = 800
+    }
 
-      const prefix = url.replace(/https?:\/\//, '').replace(/\/$/, '').replace(/\//g, '-')
-      const filename = `${prefix}-${options.browser}-${options.lang}-${viewport}.png`
+    const prefix = url.replace(/https?:\/\//, '').replace(/\/$/, '').replace(/\//g, '-')
+    const filename = `${prefix}-${options.browser}-${options.lang}-${viewport}.png`
 
-      shootbot.saveScreenshot(url, {
-        viewport: {
-          width: parseInt(width),
-          height: parseInt(height),
-        },
-        engine: options.browser,
-        lang: options.lang,
-        waitfor: options.waitfor,
-        filename: filename,
-        fullpage: fullpage,
-      }, shootbot.handler, shootbot.errorHandler)
+    shootbot.saveScreenshot(url, {
+      viewport: {
+        width: parseInt(width),
+        height: parseInt(height),
+      },
+      engine: options.browser,
+      lang: options.lang,
+      waitfor: options.waitfor,
+      filename: filename,
+      fullpage: fullpage,
+    }, shootbot.handler, shootbot.errorHandler)
   })
 })
