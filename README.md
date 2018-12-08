@@ -54,7 +54,7 @@ Take screenshots for `https://example.com/` of viewports `1200` and `320`.
 $ shootbot https://example.com/ --viewports 1200,320
 ```
 
-And also you can specify height of viewport like following.
+You also can specify height of viewport like following.
 
 ```
 $ shootbot https://example.com/ --viewports 1200x800,320
