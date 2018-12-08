@@ -4,7 +4,8 @@
   "description": "",
   "bin": "cli.js",
   "scripts": {
-    "test": "eslint cli.js && eslint lib/Shootbot.js && mocha --timeout 10000 --exit"
+    "test": "eslint cli.js && eslint lib/Shootbot.js && mocha --timeout 10000 --exit",
+    "test:ci": "eslint cli.js && eslint lib/Shootbot.js && mocha --timeout 10000 --exclude test/firefox.spec.js --exit"
   },
   "author": "",
   "license": "MIT",
