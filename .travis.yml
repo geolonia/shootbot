@@ -3,6 +3,10 @@ notifications:
   email:
     on_success: never
     on_failure: change
+env:
+  - MOZ_HEADLESS=1
+addons:
+  firefox: latest
 branches:
   only:
   - master
