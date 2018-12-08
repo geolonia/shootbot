@@ -3,14 +3,8 @@
 'use strict';
 
 const program = require('commander');
-const puppeteerChrome = require('puppeteer');
-const puppeteerFirefox = require('puppeteer-firefox');
+const shootbot = require('./lib/Shootbot')
 const pkg = require('./package.json');
-
-const browsers = {
-  chrome: { puppeteer: puppeteerChrome, isDefault: true },
-  firefox: {puppeteer: puppeteerFirefox },
-}
 
 program
   .version(pkg.version)
@@ -26,67 +20,35 @@ if (0 === program.args.length) {
   process.exit(1);
 }
 
-let viewports = [
-  1200,
-  992,
-  768,
-  576
-]
-if (program.viewports && program.viewports.length) {
-  viewports = program.viewports.split(/,/)
-}
+const url = program.args[0]
 
-let lang = 'en'
-if (program.acceptLanguage && program.acceptLanguage) {
-  lang = program.acceptLanguage
-}
+const viewports = (program.viewports || '1200,992,768,576').split(/,/)
+const browser = (program.browser || 'chrome').toLowerCase()
+const lang = (program.acceptLanguage || 'en')
+const waitfor = (program.waitfor || 3000)
 
-let waitfor = 3000
-if (program.waitfor && program.waitfor) {
-  waitfor = program.waitfor
-}
-
-const error = (message) => {
+const errorHandler = (message) => {
   console.error('\x1b[31mError:\x1b[0m %s', message);
   process.exit(1)
 }
 
-const saveScreenshot = async (url, viewport, selectedBrowser) => {
-  const puppeteer = browsers[selectedBrowser].puppeteer
-  const browser = await puppeteer.launch()
-  const page = await browser.newPage()
-
-  try {
-    await page.setExtraHTTPHeaders({
-      'Accept-Language': lang
-    })
-  } catch(e) {
-    if (program.acceptLanguage && program.acceptLanguage) {
-      error('The browser doesn\'t support `--accept-language`. Please try another browser.')
-    }
-  }
-
-  await page.setViewport({width: parseInt(viewport), height: 800})
-  await page.goto(url, {waitUntil: "domcontentloaded"}).then(() => {
-    setTimeout(async () => {
-      let filename = url.replace(/https?:\/\//, '').replace(/\/$/, '').replace(/\//g, '-') 
-      filename = filename+ '-' + selectedBrowser + '-' + lang  + '-' + viewport + '.png'
-      await page.screenshot({path: filename, fullPage: true})
-      await browser.close()
-    }, waitfor)
-  }).catch((e) => {
-    error(e.message)
-  })
-}
-
-const url = program.args[0]
-const selectedBrowser = (program.browser || 'chrome').toLowerCase()
-
-if (!browsers[selectedBrowser]) {
-  error('Invalid browser.')
+/* eslint no-unused-vars: 0 */
+const handler = (response) => {
+  // noting to do.
 }
 
 for (let i = 0; i < viewports.length; i++) {
-  const viewport = viewports[i]
-  saveScreenshot(url, viewport, selectedBrowser)
+  const prefix = url.replace(/https?:\/\//, '').replace(/\/$/, '').replace(/\//g, '-')
+  const filename = `${prefix}-${browser}-${lang}-${viewports[i]}.png`
+
+  shootbot.saveScreenshot(url, {
+    viewport: {
+      width: parseInt(viewports[i]),
+      height: 800,
+    },
+    engine: browser,
+    lang: lang,
+    waitfor: waitfor,
+    filename: filename
+  }, handler, errorHandler)
 }
