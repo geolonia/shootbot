@@ -12,7 +12,8 @@ node_js:
 - '9'
 - '10'
 script:
-- npm run test:ci
+- "./node_modules/puppeteer-firefox/.local-browser/$(ls ./node_modules/puppeteer-firefox/.local-browser/)/firefox/firefox -headless -screenshot https://developer.mozilla.com"
+- npm run test
 deploy:
   provider: npm
   email: hatatatehaze@gmail.com
