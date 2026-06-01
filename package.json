@@ -11,13 +11,13 @@
   "license": "MIT",
   "dependencies": {
     "commander": "^2.19.0",
-    "puppeteer": "^1.11.0",
+    "puppeteer": "^24.15.0",
     "puppeteer-firefox": "^0.4.2"
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "eslint": "^5.10.0",
+    "eslint": "^10.4.1",
     "image-size": "^0.6.3",
-    "mocha": "^5.2.0"
+    "mocha": "^11.7.6"
   }
 }
